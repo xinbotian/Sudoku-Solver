@@ -78,11 +78,21 @@ class Calculate implements Runnable {
                 tree.add(new Integer(b[c][column]));
             }
         }
-    }
-    arrayAdd(array, tree);
-    return array;
+        // Utilize int division get the element in same 3x3 row
+        for (int a = (row / 3) * 3; a < (row / 3 + 1) * 3; a++)
+        {
+            //get the element in same 3x3 column
+            for (int c = (column / 3) * 3; c < (column / 3 + 1) * 3; c++) {
+                // if element meet all conditions add it to the tree
+                if ((!(a == row && c == column)) && b[a][c] != 0) {
+                    tree.add(new Integer(b[a][c]));
+                }
+            }
+        }
+        arrayAdd(array, tree);
+        return array;
 
-}
+    }
 
     //add all possible value for the slots
     public void run() {
@@ -104,14 +114,14 @@ class Calculate implements Runnable {
             }
         }
         ArrayList<Integer>[][] utilization = new ArrayList[9][9];
-        while(column<9) {
+        while (column < 9) {
             if (flag == true) {
                 row = 0;
             }
             while (row < 9) {
                 if (b[row][column] == 0) {
                     if (flag) {
-                        ArrayList<Integer> List = assume(row, column);
+                        ArrayList<Integer> list = assume(row, column);
                         utilization[row][column] = list;
                     }
                     //If haven't find the possible solution, means previous number is wrong, go back and change
@@ -144,27 +154,27 @@ class Calculate implements Runnable {
             column++;
         }
     }
-
     //check if the sudoku is completed
-    public void judge(){
-    boolean r = true;
-    //Check for slots that haven't been filled
-        for (int a1 = 0; a1 < 9; a1++){
-            for(int b1 = 0; b1 < 9; b1++){
-                if(r == false){
+    public void judge() {
+        boolean r = true;
+        //Check for slots that haven't been filled
+        for (int a1 = 0; a1 < 9; a1++) {
+            for (int b1 = 0; b1 < 9; b1++) {
+                if (r == false) {
                     break;
                 }
                 //If b[a1][b1] need to be calculated, take it out
-                if(b[a1][b1] == 0){
+                if (b[a1][b1] == 0) {
                     r = false;
                 }
             }
         }
-        if (r){
-            for(int a1 = 0; a1 < 9; a1++){
-                for(int b1 = 0; b1 < 9; b1++){
-                    Myframe.filed[a1][b1].setText(b[a1][b1]+"");
+        if (r) {
+            for (int a1 = 0; a1 < 9; a1++) {
+                for (int b1 = 0; b1 < 9; b1++) {
+                    Myframe.filed[a1][b1].setText(b[a1][b1] + "");
                 }
             }
         }
+    }
 }
